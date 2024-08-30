@@ -1,9 +1,11 @@
+import Link from "next/link";
 function Card() {
     return (
         <>
             <div
                 className="w-64 h-72 m-3 rounded overflow-hidden border cursor-pointer"
             >
+                <Link href="/restorent/macdonals">
                 <img
                     src="https://resizer.otstatic.com/v2/photos/wide-huge/2/31852905.jpg"
                     alt=""
@@ -22,6 +24,7 @@ function Card() {
                     </div>
                     <p className="text-sm mt-1 font-bold">Booked 3 times today</p>
                 </div>
+                </Link>
             </div>
         </>
     );
