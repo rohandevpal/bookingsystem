@@ -25,7 +25,7 @@ function Header() {
                         />
                         <button className="rounded bg-red-600 px-9 py-2 text-white"
                             onClick={() => {
-                                if (location == 'banana') { return null }
+                                if (location == 'banana') { return alert('Please enter valid value') }
                                 router.push(`/search`)
                             }}
                         >
