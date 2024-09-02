@@ -12,3 +12,60 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+//restorent schema
+model Restorent {
+  id          Int      @id @default(autoincrement())
+  name        String
+  main_image  String
+  description String
+  images      String[]
+  open_time   String
+  close_time  String
+  slug        String   @unique
+  price       PRICE
+  items       Item[]
+  location_id Int
+  location    Location @relation(fields: [location_id], references: [id])
+
+  region_id  Int
+  region     Region   @relation(fields: [region_id], references: [id])
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+//Items schema
+model Item {
+  id           Int       @id @default(autoincrement())
+  name         String
+  price        String
+  restorent_id Int
+  restorent    Restorent @relation(fields: [restorent_id], references: [id])
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
+}
+
+//location schema
+model Location {
+  id         Int         @id @default(autoincrement())
+  name       String
+  restorents Restorent[]
+  created_at DateTime    @default(now())
+  updated_at DateTime    @updatedAt
+}
+
+//region schema
+
+model Region {
+  id         Int         @id @default(autoincrement())
+  name       String
+  restorent  Restorent[]
+  created_at DateTime    @default(now())
+  updated_at DateTime    @updatedAt
+}
+
+enum PRICE {
+  CHEAP
+  REGULAR
+  EXPENSIVE
+}
