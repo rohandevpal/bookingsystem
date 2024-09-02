@@ -45,6 +45,7 @@ model Item {
   updated_at   DateTime  @updatedAt
 }
 
+
 //location schema
 model Location {
   id         Int         @id @default(autoincrement())

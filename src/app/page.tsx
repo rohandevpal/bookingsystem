@@ -2,7 +2,8 @@ import Image from "next/image";
 import NavBar from "./component/Navbar";
 import Header from "./component/Header";
 import Card from "./component/card";
-//adminopenbookingsystem
+//adminrohanpal
+//adminrohanpal
 
 async function getData(){
   const response = await fetch('https://api.github.com/repositories/471339241');
