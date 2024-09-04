@@ -1,35 +1,54 @@
+
 import Image from "next/image";
 import NavBar from "./component/Navbar";
 import Header from "./component/Header";
 import Card from "./component/card";
+import { PrismaClient, Location, Region, PRICE } from "@prisma/client";
+import { promises } from "fs";
 //adminrohanpal
 //adminrohanpal
 
-async function getData(){
-  const response = await fetch('https://api.github.com/repositories/471339241');
-  const data = await response.json();
-  return data;
+//define type 
+export interface restorentCardType {
+  id: number
+  name: string
+  main_image: string
+  location: Location
+  region: Region
+  price: PRICE
+  slug: string
 }
 
-async function getTime() {
-    const response = await fetch('http://worldtimeapi.org/api/timezone/Asia/Kolkata',{
-      next:{
-        revalidate: 3,
-      }
-    });
-    const date = await response.json();
-    return date;
+
+const prisma = new PrismaClient()
+
+const fetchrestorents = async (): Promise<restorentCardType[]> => {
+  let restorents = await prisma.restorent.findMany({
+    select: {
+      id: true,
+      name: true,
+      main_image: true,
+      location: true,
+      region: true,
+      price: true,
+      slug:true
+    }
+  });
+  return restorents;
+
 }
 
 export default async function Home() {
-  const [data, time] = await Promise.all([getData(), getTime()]);
+
+  const restronts = await fetchrestorents();
+
   return (
     <main>
       <Header />
       <div className="py-3 px-36 mt-10 flex flex-wrap justify-center">
-        {/* <p>{data.full_name}</p>
-        <p>{time.datetime}</p> */}
-        <Card />
+        {restronts.map((restront) => (
+          <Card restorent = {restront} />
+        ))}
       </div>
     </main>
   );
