@@ -7,9 +7,10 @@ import Restorentdsc from "../components/restorentdesc"
 import Restorentimages from "../components/restorentimgs"
 import Restorentreviews from "../components/restorentreviews"
 import { PrismaClient } from "@prisma/client"
+import { notFound } from "next/navigation" // You can use this to handle not found cases.
+import { error } from "console"
 
 const prisma = new PrismaClient();
-
 
 interface Props {
     params: {
@@ -18,8 +19,16 @@ interface Props {
 }
 
 
-const restorentdata = async (slug: string) => {
-    const data = await prisma.restorent.findUnique({
+interface RestorentType {
+
+    id: number;
+    name: string;
+    description: string;
+    images: string[];
+
+}
+const fetchRestorent = async (slug: string): Promise<RestorentType> => {
+    const restorent = await prisma.restorent.findUnique({
         where: {
             slug
         },
@@ -30,22 +39,29 @@ const restorentdata = async (slug: string) => {
             images: true
         }
     })
+
+    if (!restorent) {
+        throw new Error();
+    }
+    return restorent
 }
 
-
 export default async function RestorentDetailsPage({ params }: Props) {
+    const data = await fetchRestorent(params.slug);
 
-    const restorent = await restorentdata(params.slug);
+
+    if (!data) {
+        notFound(); // Handle when the restaurant is not found
+    }
 
     return (
-
         <>
             <div className="bg-white w-[70%] rounded p-3 shadow">
                 <Restorentnav />
-                <Restorenttitle title={restorentdata?.name} />
+                <Restorenttitle title={data.name} /> {/* Pass the name here */}
                 <Restorentrating />
-                <Restorentdsc />
-                <Restorentimages />
+                <Restorentdsc description={data.description} /> {/* Pass the description */}
+                <Restorentimages images={data.images} /> {/* Pass the images */}
                 <Restorentreviews />
             </div>
             <div className="w-[27%] relative text-reg">

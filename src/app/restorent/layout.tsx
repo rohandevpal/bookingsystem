@@ -1,8 +1,33 @@
 import { Metadata } from "next/types";
 import HeaderRestorent from "./components/header";
+import { PrismaClient } from "@prisma/client";
 
 
+const prisma = new PrismaClient();
 
+interface Props {
+  param:{
+    slug:string
+  }
+}
+
+
+const fetchrestorentsData = async (slug : string) => {
+    const data = await prisma.restorent.findUnique({
+      where: {
+        slug 
+      },
+      select:{
+        id:true,
+        name:true,
+        slug:true,
+        description:true,
+        images:true,
+      }
+    })
+    return data
+    console.log(data)
+}
 
 export const metadata: Metadata = {
     title: " | Restorent",
@@ -17,7 +42,7 @@ export default function restorentlayout({
   }>){    
     return(
         <>
-            <HeaderRestorent />
+            <HeaderRestorent  />
             <div className="flex m-auto w-2/3 justify-between items-start 0 -mt-11">
                 {children}
             </div>

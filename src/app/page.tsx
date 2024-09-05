@@ -36,11 +36,13 @@ const fetchrestorents = async (): Promise<restorentCardType[]> => {
   });
   return restorents;
 
+
 }
 
 export default async function Home() {
 
   const restronts = await fetchrestorents();
+  
 
   return (
     <main>
