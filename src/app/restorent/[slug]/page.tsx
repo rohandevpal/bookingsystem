@@ -17,10 +17,7 @@ interface Props {
         slug: string
     }
 }
-
-
 interface RestorentType {
-
     id: number;
     name: string;
     description: string;
@@ -48,8 +45,6 @@ const fetchRestorent = async (slug: string): Promise<RestorentType> => {
 
 export default async function RestorentDetailsPage({ params }: Props) {
     const data = await fetchRestorent(params.slug);
-
-
     if (!data) {
         notFound(); // Handle when the restaurant is not found
     }
@@ -57,7 +52,7 @@ export default async function RestorentDetailsPage({ params }: Props) {
     return (
         <>
             <div className="bg-white w-[70%] rounded p-3 shadow">
-                <Restorentnav />
+                <Restorentnav slug = {data.name} />
                 <Restorenttitle title={data.name} /> {/* Pass the name here */}
                 <Restorentrating />
                 <Restorentdsc description={data.description} /> {/* Pass the description */}
